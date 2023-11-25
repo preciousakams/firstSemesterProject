@@ -3,16 +3,22 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html>
+<html lang="en-GB">
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            #form, #viewForm, #updateForm, #deleteForm {
+                display: none;
+            }
+        </style>
     </head>
     <body>
         
         <!-- add contact details -->
         <div>
+            <h1>Add Contact</h1>
             <form id="form">
                 <label for="name">Name:</label><br>
                 <input type="text" id="name" name="name"><br>
@@ -24,8 +30,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </form>
         </div>
         <!-- view contact details -->
+        
+        <div>
+            <h1>View Contact</h1>
+            <form id="viewForm">
+                <label for="email">Email:</label><br>
+                <input type="text" id="email2" name="email" title="viewContact"><br><br>
+                <input type="button" value="View Contact" id="viewContact">
+            </form>
+            <p id="view"></p>
+        </div>
         <!-- update contact details -->
+        <div>
+            <h1>Update Contact</h1>
+            <form id="updateForm">
+                <label for="email">Email:</label><br>
+                <input type="text" id="email3" name="email" title="updateContact"><br><br>
+                <input type="button" value="Update Contact" id="updateContact">
+            </form>
+        </div>
         <!-- delete contact details -->
+        <div>
+            <h1>Delete Contact</h1>
+            <form id="deleteForm">
+                <label for="email">Email:</label><br>
+                <input type="text" id="email4" name="email" title="deleteContact"><br><br>
+                <input type="button" value="Delete Contact" id="deleteContact">
+            </form>
+        </div>
+        
         <script>
             // add contact details to local storage
                 document.getElementById("addContact").addEventListener("click", function(e){
@@ -43,6 +76,54 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     alert("Email already exists");
                 }
                 
+            });
+
+            // view contact details from local storage
+            const viewContact = document.getElementById("viewContact");
+            viewContact.addEventListener("click", function(e){
+                e.preventDefault();
+                const email = document.getElementById("email2").value;
+                const data = JSON.parse(localStorage.getItem(email));
+                if (data) {
+                    document.getElementById("view").innerHTML = `Name: ${data.name} <br> Email: ${data.email} <br> Phone: ${data.phone}`;
+                    document.getElementById("viewForm").reset();
+                }
+                else {
+                    document.getElementById("view").innerHTML = "Contact not found";
+                }
+            });
+
+            // update contact details in local storage
+            const updateContact = document.getElementById("updateContact");
+            updateContact.addEventListener("click", function(e){
+                e.preventDefault();
+                const email = document.getElementById("email3").value;
+                const data = JSON.parse(localStorage.getItem(email));
+                if (data) {
+                    const name = prompt("Enter new name", data.name);
+                    const phone = prompt("Enter new phone", data.phone);
+                    const newData = {name, email, phone};
+                    localStorage.setItem(email, JSON.stringify(newData));
+                    document.getElementById("updateForm").reset();
+                }
+                else {
+                    alert("Contact not found");
+                }
+            });
+
+            // delete contact details from local storage
+            const deleteContact = document.getElementById("deleteContact");
+            deleteContact.addEventListener("click", function(e){
+                e.preventDefault();
+                const email = document.getElementById("email4").value;
+                const data = JSON.parse(localStorage.getItem(email));
+                if (data) {
+                    localStorage.removeItem(email);
+                    document.getElementById("deleteForm").reset();
+                }
+                else {
+                    alert("Contact not found");
+                }
             });
         </script>
     </body>
