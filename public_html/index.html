@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        <!-- add contact details -->
+        <div>
+            <form id="form">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name"><br>
+                <label for="email">Email:</label><br>
+                <input type="text" id="email" name="email"><br>
+                <label for="phone">Phone:</label><br>
+                <input type="text" id="phone" name="phone"><br><br>
+                <input type="button" value="Add Contact" id="addContact">
+            </form>
+        </div>
+        <!-- view contact details -->
+        <!-- update contact details -->
+        <!-- delete contact details -->
+        <script>
+            // add contact details to local storage
+                document.getElementById("addContact").addEventListener("click", function(e){
+                e.preventDefault();
+
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const phone = document.getElementById("phone").value;
+                const data = {name, email, phone};
+                if (!localStorage.getItem(email)) {
+                    localStorage.setItem(email, JSON.stringify(data));
+                document.getElementById("form").reset();
+                }
+                else {
+                    alert("Email already exists");
+                }
+                
+            });
+        </script>
+    </body>
+</html>
