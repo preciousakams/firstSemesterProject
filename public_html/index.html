@@ -48,6 +48,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 border-radius: 6px;
                 background-color: rgb(59, 159, 179);
                 color: white;
+                margin: 1%;
             }
 
             .contacts input:hover {
@@ -67,12 +68,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 color: white;
             }
 
+            .infoSpan {
+                color: red;
+            }
+
         </style>
     </head>
     <body>
 <div class="container">
 
-    <div class="contacts">
+        <div class="contacts">
 
     <input type="button" value="Add Contact" id="addContactDisplay">
     <input type="button" value="Update Contact" id="updateContactDisplay">
@@ -84,12 +89,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             
             <form id="form">
                 <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name"><br>
+                <input type="text" id="name" name="name" required><br>
                 <label for="email">Email:</label><br>
-                <input type="text" id="email" name="email"><br>
-                <label for="phone">Phone:</label><br>
-                <input type="text" id="phone" name="phone"><br><br>
+                <input type="email" id="email" name="email" required><br>
+                <label for="phone" >Phone:</label><br>
+                <input type="number" id="phone" name="phone" required><br><br>
                 <input type="button" value="Add Contact" id="addContact">
+                <span class="infoSpan" id="addSpan"></span>
             </form>
         </div>
         <!-- update contact details -->
@@ -99,6 +105,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <label for="email">Email:</label><br>
                 <input type="text" id="email3" name="email" title="updateContact"><br><br>
                 <input type="button" value="Update Contact" id="updateContact">
+                <span class="infoSpan" id="updateSpan"></span>
             </form>
         </div>
         <!-- delete contact details -->
@@ -108,6 +115,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <label for="email">Email:</label><br>
                 <input type="text" id="email4" name="email" title="deleteContact"><br><br>
                 <input type="button" value="Delete Contact" id="deleteContact">
+                <span class="infoSpan" id="deleteSpan"></span>
             </form>
         </div>
         
@@ -141,6 +149,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                }
 
         }
+           
+        displayContacts();
 
         // edit contact details
         function edit(td) {
@@ -155,7 +165,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 localStorage.setItem(email, JSON.stringify(newData));
                 location.reload();
         }
-            displayContacts();
             // delete contact details
             function deleteTable(td) {
                 
@@ -199,15 +208,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 const email = document.getElementById("email").value;
                 const phone = document.getElementById("phone").value;
                 const data = {name, email, phone};
-                if (!localStorage.getItem(email)) {
-                    localStorage.setItem(email, JSON.stringify(data));
-                document.getElementById("form").reset();
-                location.reload();
+                if (name === "" || email === "" || phone === "") {
+                    document.getElementById("addSpan").innerHTML = "Please fill in all fields";
+                   setInterval(function(){
+                    document.getElementById("addSpan").innerHTML = "";
+                   }, 2000);
                 }
                 else {
-                    alert("Email already exists");
-                }
-                
+                        if (!localStorage.getItem(email)) {
+                            localStorage.setItem(email, JSON.stringify(data));
+                        document.getElementById("form").reset();
+                        location.reload();
+                        }
+                        else {
+                            document.getElementById("addSpan").innerHTML = "Contact already exists";
+                            setInterval(function(){
+                                document.getElementById("addSpan").innerHTML = "";
+                            }, 2000);
+                        }
+            }
             });
 
 
@@ -226,7 +245,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     location.reload();
                 }
                 else {
-                    alert("Contact not found");
+                    document.getElementById("updateSpan").innerHTML = "Contact not found";
+                    setInterval(function(){
+                        document.getElementById("updateSpan").innerHTML = "";
+                    }, 2000);
                 }
             });
 
@@ -242,7 +264,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     location.reload();
                 }
                 else {
-                    alert("Contact not found");
+                    document.getElementById("deleteSpan").innerHTML = "Contact not found";
+                    setInterval(function(){
+                        document.getElementById("deleteSpan").innerHTML = "";
+                    }, 2000);
                 }
             });
         </script>
