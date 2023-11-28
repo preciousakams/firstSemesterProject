@@ -11,6 +11,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/7967e81f77.js" crossorigin="anonymous"></script>
         <style>
             #form,#updateForm, #deleteForm {
                 display: none;
@@ -18,7 +19,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             .displayContacts {
                border: solid 3px rgb(59, 159, 179);
                text-align: center;
-               
+               margin: 4% auto;
             }
             .displayContacts th {
                 background-color: rgb(59, 159, 179);
@@ -28,18 +29,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 border: solid 1px rgb(59, 159, 179);
             }
 
-            .displayContacts input {
-                background-color: rgb(59, 159, 179);
-                color: white;
+            .displayContacts button {
+                background-color: transparent;
+                color: rgb(59, 159, 179);
                 border: none;
                 padding: 5px;
                 border-radius: 5px;
+            }
+
+            .contacts {
+                text-align: center;
+                margin: 4% auto;
             }
             
             .contacts input{
                 text-align: center;
                 border: solid rgb(59, 159, 179);
                 border-radius: 6px;
+                background-color: rgb(59, 159, 179);
+                color: white;
+            }
+
+            .contacts input:hover {
+                background-color: white;
+                color: rgb(59, 159, 179);
+                cursor: pointer;
+            }
+
+            .contactForms form input{
+                margin: 1% auto;
+                border: solid rgb(59, 159, 179);
+                border-radius: 6px;
+            }
+
+            .contactForms form input[type="button"] {
                 background-color: rgb(59, 159, 179);
                 color: white;
             }
@@ -57,7 +80,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 </div>
     
         <!-- add contact details -->
-        <div>
+        <div class="contactForms">
             
             <form id="form">
                 <label for="name">Name:</label><br>
@@ -70,7 +93,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </form>
         </div>
         <!-- update contact details -->
-        <div>
+        <div class="contactForms">
            
             <form id="updateForm">
                 <label for="email">Email:</label><br>
@@ -79,7 +102,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </form>
         </div>
         <!-- delete contact details -->
-        <div>
+        <div class="contactForms">
             
             <form id="deleteForm">
                 <label for="email">Email:</label><br>
@@ -114,7 +137,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 const data = JSON.parse(localStorage.getItem(key));
-                contactTable.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.phone}</td><td><input type="submit" onclick=edit(this) value="Edit"> <input type="submit" onclick= deleteTable(this) value="Delete"></td> </tr>`;
+                contactTable.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.phone}</td><td><button type="submit" onclick=edit(this)><i class="fa-solid fa-pen-to-square"></i></button> <button type="submit" onclick= deleteTable(this) ><i class="fa-solid fa-trash"></i></button></td> </tr>`;
                }
 
         }
@@ -150,7 +173,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             // display add contact form
             document.getElementById("addContactDisplay").addEventListener("click", function(){
                 document.getElementById("form").style.display = "block";
-                document.getElementById("viewForm").style.display = "none";
                 document.getElementById("updateForm").style.display = "none";
                 document.getElementById("deleteForm").style.display = "none";                
             });
@@ -159,7 +181,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             document.getElementById("updateContactDisplay").addEventListener("click", function(){
                 document.getElementById("updateForm").style.display = "block";
                 document.getElementById("form").style.display = "none";
-                document.getElementById("viewForm").style.display = "none";
                 document.getElementById("deleteForm").style.display = "none";
                 
             });
@@ -167,7 +188,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             document.getElementById("deleteContactDisplay").addEventListener("click", function(){
                 document.getElementById("deleteForm").style.display = "block";
                 document.getElementById("form").style.display = "none";
-                document.getElementById("viewForm").style.display = "none";
                 document.getElementById("updateForm").style.display = "none";
             });
 
@@ -182,6 +202,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 if (!localStorage.getItem(email)) {
                     localStorage.setItem(email, JSON.stringify(data));
                 document.getElementById("form").reset();
+                location.reload();
                 }
                 else {
                     alert("Email already exists");
