@@ -5,20 +5,60 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html lang="en-GB">
     <head>
-        <title>TODO supply a title</title>
+        <title>Contact Organizer</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <style>
-            #form, #viewForm, #updateForm, #deleteForm {
+            #form,#updateForm, #deleteForm {
                 display: none;
             }
+            .displayContacts {
+               border: solid 3px rgb(59, 159, 179);
+               text-align: center;
+               
+            }
+            .displayContacts th {
+                background-color: rgb(59, 159, 179);
+                color: white;
+            }
+            .displayContacts td {
+                border: solid 1px rgb(59, 159, 179);
+            }
+
+            .displayContacts input {
+                background-color: rgb(59, 159, 179);
+                color: white;
+                border: none;
+                padding: 5px;
+                border-radius: 5px;
+            }
+            
+            .contacts input{
+                text-align: center;
+                border: solid rgb(59, 159, 179);
+                border-radius: 6px;
+                background-color: rgb(59, 159, 179);
+                color: white;
+            }
+
         </style>
     </head>
     <body>
-        
+<div class="container">
+
+    <div class="contacts">
+
+    <input type="button" value="Add Contact" id="addContactDisplay">
+    <input type="button" value="Update Contact" id="updateContactDisplay">
+    <input type="button" value="Delete Contact" id="deleteContactDisplay">
+</div>
+    
         <!-- add contact details -->
         <div>
-            <h1>Add Contact</h1>
+            
             <form id="form">
                 <label for="name">Name:</label><br>
                 <input type="text" id="name" name="name"><br>
@@ -29,20 +69,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <input type="button" value="Add Contact" id="addContact">
             </form>
         </div>
-        <!-- view contact details -->
-        
-        <div>
-            <h1>View Contact</h1>
-            <form id="viewForm">
-                <label for="email">Email:</label><br>
-                <input type="text" id="email2" name="email" title="viewContact"><br><br>
-                <input type="button" value="View Contact" id="viewContact">
-            </form>
-            <p id="view"></p>
-        </div>
         <!-- update contact details -->
         <div>
-            <h1>Update Contact</h1>
+           
             <form id="updateForm">
                 <label for="email">Email:</label><br>
                 <input type="text" id="email3" name="email" title="updateContact"><br><br>
@@ -51,7 +80,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
         <!-- delete contact details -->
         <div>
-            <h1>Delete Contact</h1>
+            
             <form id="deleteForm">
                 <label for="email">Email:</label><br>
                 <input type="text" id="email4" name="email" title="deleteContact"><br><br>
@@ -59,7 +88,89 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </form>
         </div>
         
+
+    <!-- Display all contacts -->
+
+    <table class="table table-striped displayContacts">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody id="contactTable"></tbody>
+          
+    </table>
+</div>
         <script>
+            window.onload = function() {
+                if (localStorage.getItem("loglevel") !== null) {
+                    localStorage.removeItem("loglevel");
+                }
+            }
+            // display all contacts
+          function displayContacts() {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const data = JSON.parse(localStorage.getItem(key));
+                contactTable.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.phone}</td><td><input type="submit" onclick=edit(this) value="Edit"> <input type="submit" onclick= deleteTable(this) value="Delete"></td> </tr>`;
+               }
+
+        }
+
+        // edit contact details
+        function edit(td) {
+            selectedRow = td.parentElement.parentElement;
+           document.getElementById("name").value = selectedRow.cells[0].innerHTML;
+           const email = document.getElementById("email").value = selectedRow.cells[1].innerHTML;
+           document.getElementById("phone").value = selectedRow.cells[2].innerHTML;
+            const data = JSON.parse(localStorage.getItem(email));
+                const name = prompt("Enter new name", data.name);
+                const phone = prompt("Enter new phone", data.phone);
+                const newData = {name, email, phone};
+                localStorage.setItem(email, JSON.stringify(newData));
+                location.reload();
+        }
+            displayContacts();
+            // delete contact details
+            function deleteTable(td) {
+                
+                if (confirm("Are you sure you want to delete this contact?")) {
+                    row = td.parentElement.parentElement;
+                    const tableDel = document.getElementById("contactTable");
+                    const email= row.cells[1].innerHTML;
+                    localStorage.removeItem(email);
+                   location.reload();
+        
+                }
+            }
+
+            
+            // display add contact form
+            document.getElementById("addContactDisplay").addEventListener("click", function(){
+                document.getElementById("form").style.display = "block";
+                document.getElementById("viewForm").style.display = "none";
+                document.getElementById("updateForm").style.display = "none";
+                document.getElementById("deleteForm").style.display = "none";                
+            });
+        
+            // display update contact form
+            document.getElementById("updateContactDisplay").addEventListener("click", function(){
+                document.getElementById("updateForm").style.display = "block";
+                document.getElementById("form").style.display = "none";
+                document.getElementById("viewForm").style.display = "none";
+                document.getElementById("deleteForm").style.display = "none";
+                
+            });
+            // display delete contact form
+            document.getElementById("deleteContactDisplay").addEventListener("click", function(){
+                document.getElementById("deleteForm").style.display = "block";
+                document.getElementById("form").style.display = "none";
+                document.getElementById("viewForm").style.display = "none";
+                document.getElementById("updateForm").style.display = "none";
+            });
+
             // add contact details to local storage
                 document.getElementById("addContact").addEventListener("click", function(e){
                 e.preventDefault();
@@ -78,22 +189,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 
             });
 
-            // view contact details from local storage
-            const viewContact = document.getElementById("viewContact");
-            viewContact.addEventListener("click", function(e){
-                e.preventDefault();
-                const email = document.getElementById("email2").value;
-                const data = JSON.parse(localStorage.getItem(email));
-                if (data) {
-                    document.getElementById("view").innerHTML = `Name: ${data.name} <br> Email: ${data.email} <br> Phone: ${data.phone}`;
-                    document.getElementById("viewForm").reset();
-                }
-                else {
-                    document.getElementById("view").innerHTML = "Contact not found";
-                }
-            });
 
-            // update contact details in local storage
+            // search for a specific contact using the email and update it
             const updateContact = document.getElementById("updateContact");
             updateContact.addEventListener("click", function(e){
                 e.preventDefault();
@@ -105,13 +202,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     const newData = {name, email, phone};
                     localStorage.setItem(email, JSON.stringify(newData));
                     document.getElementById("updateForm").reset();
+                    location.reload();
                 }
                 else {
                     alert("Contact not found");
                 }
             });
 
-            // delete contact details from local storage
+            // search for a specific contact using the emaila and delete it
             const deleteContact = document.getElementById("deleteContact");
             deleteContact.addEventListener("click", function(e){
                 e.preventDefault();
@@ -120,6 +218,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 if (data) {
                     localStorage.removeItem(email);
                     document.getElementById("deleteForm").reset();
+                    location.reload();
                 }
                 else {
                     alert("Contact not found");
