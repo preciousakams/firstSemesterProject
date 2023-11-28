@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/7967e81f77.js" crossorigin="anonymous"></script>
+       
   <title>User Documentation</title>
   <style>
     h1,
@@ -33,18 +35,46 @@
     li {
       margin-top: 0.5em;
     }
+    #tableOfContent {
+      list-style-type: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .fa-solid {
+      font-size: 3.5em;
+      color:  rgb(59, 159, 179);
+    }
   </style>
 </head>
 <body>
+  <a href="index.html" title="link to the app">
+    <i class="fa-solid fa-angles-left"></i>
+  </a>
   <h1>User Documentation</h1>
-  <!-- Introduction Section -->
-  <h3>Introduction</h3>
+  
+    <!-- Introduction Section -->
+    <div id="introduction">
+      <h3>Introduction</h3>
+    
+      <p>This is a contact management Application, which allows users to create, read, update and delete contacts.</p>
+      <p>Users from all demographic will have no problem navigating and utilizing this tool</p>
+      <p>This is a user documentation for the contact management application</p>
+      <p>This documentation will provide a step-by-step guide on how to use the application</p>
+      <p>It will also provide a list of all the features and functionality of the application</p>
+      <p>It also provides a table of content for easy navigation</p>
+    </div>
 
-  <p>This is a contact management Application, which allows users to create, read, update and delete contacts.</p>
-  <p>Users from all demographic will have no problem navigating and utilizing this tool</p>
- 
+  <h4>Table Of Content</h4>
+  <ul id="tableOfContent">
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#features-and-functionality">Features and Functionality</a></li>
+    <li><a href="#step-by-step-instructions">Step-by-Step Instructions</a></li>
+  </ul>
+
   <!-- Getting Started Section -->
-
+<div id="getting-started">
   <h3>Getting Started</h3>
   <h4>Adding a new Contact</h4>
   <ul>
@@ -79,7 +109,9 @@
     <li>Provide the email of the user contact you wish to delete  </li>
     <li>Click the "Delete contact" button to confirm the deletion </li>
 </ul>
+</div>
   <!-- Features and Functionality Section -->
+  <div id="features-and-functionality">
  <h3>Features and Functionality</h3>
  <h4>Features</h4>
  <p>All contacts saved is displayed once the page is loaded</p>
@@ -103,7 +135,9 @@
 </li>
 <li>Users can also go through the contact informations displayed and click on a specific contact's trash icon to delete it </li>
 </ul>
+</div>
 <!-- Step-by-Step Instructions -->
+<div id="step-by-step-instructions">
  <h3>Step-by-Step Instructions</h3>
   <h4>Adding a new Contact</h4>
   <ul>
@@ -138,5 +172,6 @@
       <li>Provide the email of the user contact you wish to delete  </li>
       <li>Click the "Delete contact" button to confirm the deletion </li>
 </ul>
+</div>
 </body>
 </html>
