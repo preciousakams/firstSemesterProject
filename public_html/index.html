@@ -143,20 +143,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           
     </table>
 </div>
-        <script>
-            window.onload = function() {
-                if (localStorage.getItem("loglevel") !== null) {
-                    localStorage.removeItem("loglevel");
-                }
-            }
+        <script>           
             // display all contacts
           function displayContacts() {
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
+                if (key === "loglevel") {
+                    continue;
+                }
                 const data = JSON.parse(localStorage.getItem(key));
+                console.log(data);
                 contactTable.innerHTML += `<tr><td>${data.name}</td><td>${data.email}</td><td>${data.phone}</td><td><button type="submit" onclick=edit(this)><i class="fa-solid fa-pen-to-square"></i></button> <button type="submit" onclick= deleteTable(this) ><i class="fa-solid fa-trash"></i></button></td> </tr>`;
                }
-
+    
         }
            
         displayContacts();
@@ -192,7 +191,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             document.getElementById("addContactDisplay").addEventListener("click", function(){
                 document.getElementById("form").style.display = "block";
                 document.getElementById("updateForm").style.display = "none";
-                document.getElementById("deleteForm").style.display = "none";                
+                document.getElementById("deleteForm").style.display = "none";  
+                             
             });
         
             // display update contact form
